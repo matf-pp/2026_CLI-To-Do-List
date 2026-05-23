@@ -1,18 +1,11 @@
 [
   {
     "id": 1,
-    "title": "MathHW",
-    "category": "Math",
-    "priority": 0,
-    "due_date": "",
-    "completed": true
-  },
-  {
-    "id": 2,
-    "title": "cardio",
-    "category": "+",
-    "priority": 0,
-    "due_date": "",
+    "title": "Uciti Go",
+    "description": "",
+    "category": "faks",
+    "priority": 3,
+    "due_date": "2026-06-01",
     "completed": false
   }
 ]

@@ -1,3 +1,7 @@
-module cli-todo-list
+module todo
 
-go 1.26.2
+go 1.21
+
+require golang.org/x/term v0.18.0
+
+require golang.org/x/sys v0.18.0
