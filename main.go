@@ -22,13 +22,13 @@ type Todo struct {
 
 const FileName = "data.json"
 
-var Reset = "\033[0m"
-var Red = "\033[31m"
-var Green = "\033[32m"
+var Reset  = "\033[0m"
+var Red    = "\033[31m"
+var Green  = "\033[32m"
 var Yellow = "\033[33m"
-var Cyan = "\033[36m"
-var Bold = "\033[1m"
-var Dim = "\033[2m"
+var Cyan   = "\033[36m"
+var Bold   = "\033[1m"
+var Dim    = "\033[2m"
 
 var todos []Todo
 
@@ -204,7 +204,6 @@ func PrintTable(list []Todo) {
 		desc := t.Description
 		cat := t.Category
 
-		// # indicator counts as 2 chars — shrink title to fit
 		titleDisplay := title
 		if t.Description != "" {
 			maxT := wTitle - 2
@@ -385,6 +384,44 @@ func PrintStats() {
 	fmt.Println()
 }
 
+// ── New in k1: EditTodo ───────────────────────
+
+func EditTodo(id int, field, value string) {
+	idx := FindIndex(id)
+	if idx == -1 {
+		fmt.Fprintln(os.Stderr, "Error: Invalid todo id!")
+		os.Exit(1)
+	}
+	switch strings.ToLower(field) {
+	case "title":
+		todos[idx].Title = value
+	case "description":
+		todos[idx].Description = value
+	case "category":
+		todos[idx].Category = value
+	case "priority":
+		p, err := strconv.Atoi(value)
+		if err != nil || p < 1 || p > 3 {
+			fmt.Fprintln(os.Stderr, "Error: Priority must be 1, 2, or 3")
+			os.Exit(1)
+		}
+		todos[idx].Priority = p
+	case "due":
+		if value != "" {
+			if _, err := time.Parse("2006-01-02", value); err != nil {
+				fmt.Fprintln(os.Stderr, "Error: Due date must be YYYY-MM-DD")
+				os.Exit(1)
+			}
+		}
+		todos[idx].DueDate = value
+	default:
+		fmt.Fprintf(os.Stderr, "Error: Unknown field '%s'. Use: title, description, category, priority, due\n", field)
+		os.Exit(1)
+	}
+	saveToDos()
+	fmt.Printf("%s[+] Updated:%s #%d — %s = \"%s\"\n", Green, Reset, id, field, value)
+}
+
 func MarkDone(id int) {
 	idx := FindIndex(id)
 	if idx == -1 {
@@ -472,6 +509,18 @@ func main() {
 			os.Exit(1)
 		}
 		ShowDescription(id)
+
+	case "edit":
+		if len(os.Args) < 5 {
+			fmt.Fprintln(os.Stderr, "Usage: edit <id> <field> <value>")
+			os.Exit(1)
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error: Invalid id!")
+			os.Exit(1)
+		}
+		EditTodo(id, os.Args[3], os.Args[4])
 
 	case "stats":
 		PrintStats()
