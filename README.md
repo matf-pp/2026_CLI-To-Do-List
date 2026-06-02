@@ -1,4 +1,7 @@
 # 2026_CLI-To-Do-List
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/218997beba334ff4ae5b8d8a05ea6dc6)](https://app.codacy.com/gh/matf-pp/2026_CLI-To-Do-List/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 CLI To-Do List (Go) Jednostavna komandno-linijska aplikacija u programskom jeziku Go za upravljanje dnevnim zadacima
 
 ## Requirements
